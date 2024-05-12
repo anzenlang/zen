@@ -66,9 +66,9 @@ def confirmErrors :
 | [], [] => return true
 | _, [] | [], _ => return false
 
-/-- Checks that a command fails to compile with some errors.
+/-- Checks that a command fails to compile with some errors and potentially some warnings.
 
-`#compile_fail ["error message 1", "error message 2", ...] COMMAND`
+`#compile_fail ["error/warning message 1", "error/warning message 2", ...] COMMAND`
 
 For example:
 
@@ -97,14 +97,15 @@ unsafe def elabCompileFail : CommandElab
   let newState ← get
   let newErrorList :=
     newState.messages.toList.drop oldState.messages.msgs.size
+    |>.filter fun msg => msg.severity == .error ∨ msg.severity == .warning
   if newErrorList.isEmpty then
     throwError "compilation was expected to fail but did not"
   else
-    -- for msg in newErrorList do
-    --   let err ← msg.data.toString
-    --   println! "error:"
-    --   for line in err.splitOn "\n" do
-    --     println! "> `{line}`"
+    for msg in newErrorList do
+      let err ← msg.data.toString
+      println! "error:"
+      for line in err.splitOn "\n" do
+        println! "> `{line}`"
     let okay ← confirmErrors expected newErrorList
     if okay then
       set oldState
