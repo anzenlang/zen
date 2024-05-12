@@ -66,6 +66,26 @@ def confirmErrors :
 | [], [] => return true
 | _, [] | [], _ => return false
 
+/-- Checks that a command fails to compile with some errors.
+
+`#compile_fail ["error message 1", "error message 2", ...] COMMAND`
+
+For example:
+
+```lean
+#compile_fail ["\
+invalid universe level in constructor 'Lst.cons', parameter has type
+  α
+at universe level
+  2
+it must be smaller than or equal to the inductive datatype universe level
+  1\
+"]
+  inductive Lst (α : Type 1) : Type
+  | nil
+  | cons : α → Lst α → Lst α
+```
+-/
 @[command_elab compileFail]
 unsafe def elabCompileFail : CommandElab
 | `(#compile_fail $expected:term $c:command) => do
