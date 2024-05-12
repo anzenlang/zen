@@ -1,0 +1,14 @@
+{"version": 7,
+ "packagesDir": ".lake/packages",
+ "packages":
+ [{"url": "https://github.com/leanprover-community/batteries",
+   "type": "git",
+   "subDir": null,
+   "rev": "cac5bff36ff3c339d8fdb0d1506ec789ce57a6fd",
+   "name": "batteries",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": false,
+   "configFile": "lakefile.lean"}],
+ "name": "Zen",
+ "lakeDir": ".lake"}
