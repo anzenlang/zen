@@ -101,11 +101,11 @@ unsafe def elabCompileFail : CommandElab
   if newErrorList.isEmpty then
     throwError "compilation was expected to fail but did not"
   else
-    for msg in newErrorList do
-      let err ← msg.data.toString
-      println! "error:"
-      for line in err.splitOn "\n" do
-        println! "> `{line}`"
+    -- for msg in newErrorList do
+    --   let err ← msg.data.toString
+    --   println! "error:"
+    --   for line in err.splitOn "\n" do
+    --     println! "> `{line}`"
     let okay ← confirmErrors expected newErrorList
     if okay then
       set oldState
