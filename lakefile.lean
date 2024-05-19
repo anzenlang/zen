@@ -1,7 +1,7 @@
 import Lake
 open Lake DSL
 
-package «Zen» where
+package zen where
   -- add package configuration options here
 
 require batteries from
