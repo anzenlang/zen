@@ -4,8 +4,8 @@ open Lake DSL
 package zen where
   -- add package configuration options here
 
-require batteries from
-  git "https://github.com/leanprover-community/batteries" @ "v4.8.0"
+-- require batteries from
+--   git "https://github.com/leanprover-community/batteries" @ "v4.8.0"
 
 @[default_target]
 lean_lib «Zen» where
