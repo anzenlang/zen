@@ -1,4 +1,4 @@
-import Batteries
+import Lean
 
 
 
@@ -13,3 +13,7 @@ def 𝕂 (val : α) (_ : β) : α :=
 def plural : Nat → String
 | 0 | 1 => ""
 | _ => "s"
+
+/-- Haskell's `liftM`, wraps a function's domain and codomain in a monad. -/
+def liftF [Functor M] (f : α → β) : M α → M β :=
+  (f <$> ·)
