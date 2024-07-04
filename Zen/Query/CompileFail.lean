@@ -96,7 +96,7 @@ unsafe def elabCompileFail : CommandElab
   Lean.Elab.Command.elabCommand c
   let newState ← get
   let newErrorList :=
-    newState.messages.toList.drop oldState.messages.msgs.size
+    newState.messages.toList.drop oldState.messages.toArray.size
     |>.filter fun msg => msg.severity == .error ∨ msg.severity == .warning
   if newErrorList.isEmpty then
     throwError "compilation was expected to fail but did not"
