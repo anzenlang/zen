@@ -9,7 +9,7 @@ namespace Zen
 def 𝕂 (val : α) (_ : β) : α :=
   val
 
-/-- Empty string on `0` and `1`, `"s"` otherwise. -/
+/-- Empty string on `1`, `"s"` otherwise. -/
 def plural : Nat → String
-| 0 | 1 => ""
+| 1 => ""
 | _ => "s"
