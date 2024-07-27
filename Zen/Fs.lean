@@ -1,2 +1,2 @@
-import Zen.Fs.Init
+import Zen.Fs.Basic
 import Zen.Fs.FoldDirEntries
