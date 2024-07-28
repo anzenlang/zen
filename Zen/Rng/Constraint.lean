@@ -100,3 +100,58 @@ end Bounds
 end Constraint
 
 export Constraint (Bounds)
+
+
+
+/-- `[lo ; hi]` is `Rng.Constraint.Bounds.between lo hi`.
+
+## Variants
+
+- `[lo ; hi | ty]`: ensures the type of `lo`/`hi` is `ty`;
+- `[val]`: `Rng.Constraint.Bounds.exact val`;
+- `[val | ty]`: ensures the type of `val` is `ty`.
+-/
+scoped syntax (name := v1) "[" term (" ; " term)? (" |" term)? "]" : term
+
+/-- `[≤ hi]` is `Rng.Constraint.Bounds.ubound hi`.
+
+## Variants
+
+- `[≤ hi | ty]`: ensures the type of `hi` is `ty`.
+-/
+scoped syntax (name := v2) "[" " ≤ " term (" |" term)? "]" : term
+
+/-- `[≥ hi]` is `Rng.Constraint.Bounds.lbound hi`.
+
+## Variants
+
+- `[≥ hi | ty]`: ensures the type of `hi` is `ty`.
+-/
+scoped syntax (name := v3) "[" " ≥ " term (" |" term)? "]" : term
+
+macro_rules
+| `(v1| [$lo | $ty]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.exact ($lo : $ty)
+)
+| `(v1| [$lo ; $hi | $ty]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.between ($lo : $ty) ($hi : $ty)
+)
+| `(v2| [≤ $hi | $ty]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.ubound ($hi : $ty)
+)
+| `(v3| [≥ $lo | $ty]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.lbound ($lo : $ty)
+)
+
+| `(v1| [$lo]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.exact $lo
+)
+| `(v1| [$lo ; $hi]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.between $lo $hi
+)
+| `(v2| [≤ $hi]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.ubound $hi
+)
+| `(v3| [≥ $lo]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.lbound $lo
+)

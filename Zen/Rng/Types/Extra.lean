@@ -103,35 +103,3 @@ protected def genColl' {α : outParam Type} [Random m α]
 : RandGT Gen m (List α) :=
   Coll.instRandom.gen (c, Constraint.none)
 end coll
-
-
-
-syntax (name := v1) "[" term (" ; " term)? (" |" term)? "]" : term
-syntax (name := v2) "[" " ≤ " term (" |" term)? "]" : term
-syntax (name := v3) "[" " ≥ " term (" |" term)? "]" : term
-macro_rules
-| `(v1| [$lo | $ty]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.exact ($lo : $ty)
-)
-| `(v1| [$lo ; $hi | $ty]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.between ($lo : $ty) ($hi : $ty)
-)
-| `(v2| [≤ $hi | $ty]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.ubound ($hi : $ty)
-)
-| `(v3| [≥ $lo | $ty]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.lbound ($lo : $ty)
-)
-
-| `(v1| [$lo]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.exact $lo
-)
-| `(v1| [$lo ; $hi]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.between $lo $hi
-)
-| `(v2| [≤ $hi]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.ubound $hi
-)
-| `(v3| [≥ $lo]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.lbound $lo
-)
