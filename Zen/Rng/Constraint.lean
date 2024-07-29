@@ -117,11 +117,9 @@ export Constraint (Bounds)
 
 ## Variants
 
-- `[lo ; hi | ty]`: ensures the type of `lo`/`hi` is `ty`;
-- `[val]`: `Rng.Constraint.Bounds.exact val`;
-- `[val | ty]`: ensures the type of `val` is `ty`.
+- `[lo ; hi | ty]`: ensures the type of `lo`/`hi` is `ty`.
 -/
-scoped syntax (name := rngV1) "[" term (" ; " term)? (" |" term)? "]" : term
+scoped syntax (name := rngV1) "[" term " ; " term (" |" term)? "]" : term
 
 /-- `[≤ hi]` is `Rng.Constraint.Bounds.ubound hi`.
 
@@ -139,10 +137,15 @@ scoped syntax (name := rngV2) "[" " ≤ " term (" |" term)? "]" : term
 -/
 scoped syntax (name := rngV3) "[" " ≥ " term (" |" term)? "]" : term
 
+/-- `[= val]` is `Rng.Constraint.Bounds.exact val`.
+
+## Variants
+
+- `[= val | ty]`: ensures the type of `val` is `ty`.
+-/
+scoped syntax (name := rngV4) "[" " = " term (" |" term)? "]" : term
+
 macro_rules
-| `(rngV1| [$lo | $ty]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.exact ($lo : $ty)
-)
 | `(rngV1| [$lo ; $hi | $ty]) => `(
   _root_.Zen.Rng.Constraint.Bounds.between ($lo : $ty) ($hi : $ty)
 )
@@ -152,10 +155,10 @@ macro_rules
 | `(rngV3| [≥ $lo | $ty]) => `(
   _root_.Zen.Rng.Constraint.Bounds.lbound ($lo : $ty)
 )
-
-| `(rngV1| [$lo]) => `(
-  _root_.Zen.Rng.Constraint.Bounds.exact $lo
+| `(rngV4| [= $val | $ty]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.exact ($val : $ty)
 )
+
 | `(rngV1| [$lo ; $hi]) => `(
   _root_.Zen.Rng.Constraint.Bounds.between $lo $hi
 )
@@ -164,4 +167,7 @@ macro_rules
 )
 | `(rngV3| [≥ $lo]) => `(
   _root_.Zen.Rng.Constraint.Bounds.lbound $lo
+)
+| `(rngV4| [= $val]) => `(
+  _root_.Zen.Rng.Constraint.Bounds.exact $val
 )

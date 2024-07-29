@@ -37,6 +37,15 @@ instance [MonadLift m m'] : MonadLift (RandGT Gen m) (RandGT Gen m') where
 
 section rng
 
+namespace RandG
+instance instMonadLift [Monad m] : MonadLift (RandG Gen) (RandGT Gen m) where
+  monadLift randG state := do
+    let (res, state) := randG state
+    return (res, state)
+end RandG
+
+
+
 variable [RandomGen Gen] [Monad m]
 
 

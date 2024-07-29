@@ -68,7 +68,7 @@ namespace Zen.Rng.Readme
 -/
 #guard_msgs in #eval inIO <| Rng.runStdWith 0 do
   for _ in [0:10] do
-    let l : List Int ← gen ([3], [-10 ; 10])
+    let l : List Int ← gen ([= 3], [-10 ; 10])
     println! "{l}"
 
 
