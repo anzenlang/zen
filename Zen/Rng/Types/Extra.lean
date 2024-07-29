@@ -28,6 +28,23 @@ end prod
 
 
 
+/-- Generates a random option.
+
+The `Rng.Constraint.Plain` constraint `c.1` specifies the odds of getting `none`: one in `c.1.succ`
+(ten if `none`).
+-/
+def genOption
+  [inst : Random m α]
+  (c : (Rng.Constraint.Plain Nat) × inst.Constraint)
+: RandGT Gen m (Option α) := do
+  let odds := c.1.getD 9
+  let n : Fin odds.succ ← gen
+  if n = 0 then return none else some <$> gen c.2
+
+instance [inst : Random m α] : Random m (Option α) :=
+  Random.mk (((Rng.Constraint.Plain Nat) × inst.Constraint)) genOption
+
+
 /-- Collection RNG specification.
 
 An instance `Coll m γ` with a `R : Random m α` instance implies `Random m (γ α)` with constraint

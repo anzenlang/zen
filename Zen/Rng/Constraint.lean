@@ -23,7 +23,7 @@ instance instConstraintProd
 
 /-- Allows no RNG contraint.
 
-Used by for types which RNG cannot be constrained such as `Bool` and `Fin n.succ`.
+Used for types which RNG cannot be constrained such as `Bool` and `Fin n.succ`.
 -/
 def None : Type u := PUnit
 
@@ -31,6 +31,16 @@ namespace None
 instance instConstraint : Rng.Constraint None :=
   ⟨()⟩
 end None
+
+
+
+/-- A plain value to interpret as a constraint. -/
+abbrev Plain (α : Type u) := Option α
+
+namespace Plain
+instance instConstraint : Rng.Constraint (Plain α) :=
+  ⟨none⟩
+end Plain
 
 
 
@@ -111,7 +121,7 @@ export Constraint (Bounds)
 - `[val]`: `Rng.Constraint.Bounds.exact val`;
 - `[val | ty]`: ensures the type of `val` is `ty`.
 -/
-scoped syntax (name := v1) "[" term (" ; " term)? (" |" term)? "]" : term
+scoped syntax (name := rngV1) "[" term (" ; " term)? (" |" term)? "]" : term
 
 /-- `[≤ hi]` is `Rng.Constraint.Bounds.ubound hi`.
 
@@ -119,7 +129,7 @@ scoped syntax (name := v1) "[" term (" ; " term)? (" |" term)? "]" : term
 
 - `[≤ hi | ty]`: ensures the type of `hi` is `ty`.
 -/
-scoped syntax (name := v2) "[" " ≤ " term (" |" term)? "]" : term
+scoped syntax (name := rngV2) "[" " ≤ " term (" |" term)? "]" : term
 
 /-- `[≥ hi]` is `Rng.Constraint.Bounds.lbound hi`.
 
@@ -127,31 +137,31 @@ scoped syntax (name := v2) "[" " ≤ " term (" |" term)? "]" : term
 
 - `[≥ hi | ty]`: ensures the type of `hi` is `ty`.
 -/
-scoped syntax (name := v3) "[" " ≥ " term (" |" term)? "]" : term
+scoped syntax (name := rngV3) "[" " ≥ " term (" |" term)? "]" : term
 
 macro_rules
-| `(v1| [$lo | $ty]) => `(
+| `(rngV1| [$lo | $ty]) => `(
   _root_.Zen.Rng.Constraint.Bounds.exact ($lo : $ty)
 )
-| `(v1| [$lo ; $hi | $ty]) => `(
+| `(rngV1| [$lo ; $hi | $ty]) => `(
   _root_.Zen.Rng.Constraint.Bounds.between ($lo : $ty) ($hi : $ty)
 )
-| `(v2| [≤ $hi | $ty]) => `(
+| `(rngV2| [≤ $hi | $ty]) => `(
   _root_.Zen.Rng.Constraint.Bounds.ubound ($hi : $ty)
 )
-| `(v3| [≥ $lo | $ty]) => `(
+| `(rngV3| [≥ $lo | $ty]) => `(
   _root_.Zen.Rng.Constraint.Bounds.lbound ($lo : $ty)
 )
 
-| `(v1| [$lo]) => `(
+| `(rngV1| [$lo]) => `(
   _root_.Zen.Rng.Constraint.Bounds.exact $lo
 )
-| `(v1| [$lo ; $hi]) => `(
+| `(rngV1| [$lo ; $hi]) => `(
   _root_.Zen.Rng.Constraint.Bounds.between $lo $hi
 )
-| `(v2| [≤ $hi]) => `(
+| `(rngV2| [≤ $hi]) => `(
   _root_.Zen.Rng.Constraint.Bounds.ubound $hi
 )
-| `(v3| [≥ $lo]) => `(
+| `(rngV3| [≥ $lo]) => `(
   _root_.Zen.Rng.Constraint.Bounds.lbound $lo
 )
