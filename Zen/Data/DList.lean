@@ -55,6 +55,12 @@ where
 def manyD [Inhabited α] (n : Nat) : DList n α :=
   many default n
 
+@[inherit_doc many]
+def gen (a : α) : DList n α := many a n
+
+@[inherit_doc manyD]
+def genD [Inhabited α] : DList n α := manyD n
+
 /-- Reverses a list. -/
 def reverse (self : DList n α) : DList n α :=
   aux .nil self (by simp)
@@ -97,7 +103,7 @@ protected def map (self : DList n α) (f : α → β) : DList n β :=
 instance : Functor (DList n) where
   map f self := self.map f
 
-/-- Alias for `many n`. -/
+@[inherit_doc many]
 protected abbrev pure (a : α) : DList n α :=
   many a n
 
