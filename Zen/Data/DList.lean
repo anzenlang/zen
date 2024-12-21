@@ -12,6 +12,14 @@ inductive DList.DList' (α : Type u) : (n : Nat) → Type u
 | nil : DList' α 0
 | cons (head : α) (tail : DList' α n) : DList' α n.succ
 
+
+namespace DList.DList'
+/-- Turns itself into a normal `List`. -/
+def toList : DList' α n → List α
+| .nil => []
+| .cons hd tl => tl.toList.cons hd
+end DList.DList'
+
 /-- Dependent lists of length `n` storing `α`-elements.
 
 This type is realized by `DList.DList'`, so make sure to use `.nil` and `.cons` when
@@ -32,6 +40,10 @@ def nil : DList 0 α :=
 /-- Builds a `DList (n + 1)` from a `DList n`. -/
 def cons (head : α) (tail : DList n α) : DList n.succ α :=
   DList'.cons head tail
+
+@[inherit_doc DList'.toList]
+def toList : DList n α → List α :=
+  DList'.toList
 
 /-- The length of a list. -/
 abbrev length (_ : DList n α) : Nat := n
@@ -60,6 +72,12 @@ def gen (a : α) : DList n α := many a n
 
 @[inherit_doc manyD]
 def genD [Inhabited α] : DList n α := manyD n
+
+@[inherit_doc many]
+protected abbrev pure (a : α) : DList n α :=
+  many a n
+
+instance : Pure (DList n) := ⟨DList.pure⟩
 
 /-- Reverses a list. -/
 def reverse (self : DList n α) : DList n α :=
@@ -102,12 +120,6 @@ protected def map (self : DList n α) (f : α → β) : DList n β :=
 
 instance : Functor (DList n) where
   map f self := self.map f
-
-@[inherit_doc many]
-protected abbrev pure (a : α) : DList n α :=
-  many a n
-
-instance : Pure (DList n) := ⟨DList.pure⟩
 
 /-! ## `fold` -/
 
