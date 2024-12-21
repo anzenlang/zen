@@ -4,17 +4,6 @@ import Batteries
 
 
 
-/-! ## Extensions -/
-section ext
-
-/-- Swaps the elements of a pair. -/
-def Prod.swap : α × β → β × α
-| (a, b) => (b, a)
-
-end ext
-
-
-
 namespace Zen
 
 
