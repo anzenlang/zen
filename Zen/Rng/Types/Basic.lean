@@ -23,8 +23,8 @@ variable {n : Nat}
 
 /-- Generates a random `Fin (n + 1)`. -/
 def genFin : RandGT Gen m (Fin n.succ) := do
-  let n ← genAnyNat
-  return Fin.ofNat n
+  let n' ← genAnyNat
+  return Fin.ofNat' n.succ n'
 
 instance instRandomFin : Random m (Fin n.succ) :=
   .mk Constraint.None (𝕂 genFin)
