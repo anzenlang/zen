@@ -8,7 +8,7 @@ namespace Zen
 
 
 /-- The `𝕂`onstant combinator. -/
-def 𝕂 (val : α) (_ : β) : α :=
+abbrev 𝕂 (val : α) (_ : β) : α :=
   val
 
 /-- Empty string on `1`, `"s"` otherwise. -/
